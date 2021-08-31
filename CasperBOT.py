@@ -20,7 +20,7 @@ import logging                      # Logging module to log events
 2. Connecting to discord server via TOKEN and GUILD name
 3. Command regitration
 4. Removing default help command to make our very own
-5. Logging 
+5. Logging
 6. Creating custom functions
 7. Creating events
 '''
@@ -97,10 +97,16 @@ All Discord Commands
 async def help(ctx):
     await ctx.send('''
 
-1. **$help**     -> _To list available commands_
-2. **$hello**    -> _For building a rapport with me,_ the ***CasperBot***
-3. **$motivate** -> _Motivate members via random quotes_
-4. **$ping**     -> _Checks latency_
+1. **$help**
+-> _To list available commands_
+2. **$hello**
+-> _For building a rapport with me,_ the ***CasperBot***
+3. **$motivate**
+-> _Motivate members via random quotes_
+4. **$ping**
+-> _Checks latency_
+5. **$os <cmd1> ... <cmdn>**
+-> _interract with os_
 ''')
 
 #2. hello cmd
@@ -118,24 +124,37 @@ async def motivate(ctx):
 @bot.command()
 async def ping(ctx):
     await ctx.send(f'**latency**: _{round(bot.latency * 1000)}ms_')
+  
+
+# Sending data chunk by chunk
+def chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i+n]
 
 
-#5. os commands
+#5. OS cmd
 @bot.command()
 async def os(ctx, *args):
     no_of_args = len(args)
 
     #Converting to string
     cmd=' '.join(args)
+
     #Type=type(cmd)
 
     proc=subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     result = proc.stdout.read() + proc.stderr.read()    # stdout and stderr
-    result = result.decode('utf-8')             # decoding result to utf-8
+    result = result.decode('utf-8')                     # decoding result to utf-8
 
-    await ctx.send(f'''***OUTPUT***:
-{result}''')
+    #json_data=json.dumps(result)
+    #json_data=json_data.decode('utf-8')                 # encoding data to bytes
+
+    await ctx.send('***OUTPUT***')
+    for chunk in chunks(result, 2000):
+
+        await ctx.send(chunk)
+
 
 #logging
 
