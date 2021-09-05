@@ -154,7 +154,6 @@ async def os(ctx, *args):
 
 #6. OS bind/rev shell cmd
 
-
 #logging
 
 bot.run(TOKEN)
