@@ -1,7 +1,7 @@
 # DiscoBot
-Discord Bot for discord based C2 Sserver
+Discord Bot to get terminal session directly, in discord, from under lying linux OS.
 
 
 To do list:
-- Socket addition
-- Add the Cogs folder for separating the different types of functions for Bot
+- Socket session addition.
+- Add the Cogs folder for separating the different types of functions for Bot.
